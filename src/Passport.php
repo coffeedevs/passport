@@ -47,6 +47,13 @@ class Passport
     public static $refreshTokensExpireAt;
 
     /**
+     * The date when personal access tokens expire.
+     *
+     * @var \DateTimeInterface|null
+     */
+    public static $personalTokensExpireAt;
+
+    /**
      * The name for API token cookies.
      *
      * @var string
@@ -263,6 +270,25 @@ class Passport
     public static function ignoreMigrations()
     {
         static::$runsMigrations = false;
+
+        return new static;
+    }
+
+    /**
+     * Get or set when personal access tokens expire.
+     *
+     * @param  \DateTimeInterface|null  $date
+     * @return \DateInterval|static
+     */
+    public static function personalTokensExpireIn(DateTimeInterface $date = null)
+    {
+        if (is_null($date)) {
+            return static::$personalTokensExpireAt
+                ? Carbon::now()->diff(static::$personalTokensExpireAt)
+                : new DateInterval('P100Y');
+        } else {
+            static::$personalTokensExpireAt = $date;
+        }
 
         return new static;
     }

@@ -104,7 +104,7 @@ class PassportServiceProvider extends ServiceProvider
                 );
 
                 $server->enableGrantType(
-                    new PersonalAccessGrant, new DateInterval('P100Y')
+                    new PersonalAccessGrant, Passport::personalTokensExpireIn()
                 );
 
                 $server->enableGrantType(
